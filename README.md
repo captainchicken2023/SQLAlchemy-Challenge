@@ -98,3 +98,6 @@ Join the station and measurement tables for some of the queries.
 Use the Flask jsonify function to convert your API data to a valid JSON response object.
 
 References:
+Previous Pandas and Matplotlib exercises
+https://www.geeksforgeeks.org/connecting-pandas-to-a-database-with-sqlalchemy/#
+https://www.geeksforgeeks.org/how-to-visualize-data-from-mysql-database-by-using-matploltlib-in-python/
