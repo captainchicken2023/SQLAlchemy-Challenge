@@ -38,7 +38,15 @@ app = Flask(__name__)
 #################################################
 @app.route("/")
 def home():
-    return "Welcome"
+    return (
+        f"Hawaii Climate API: Welcome<br/>"
+        f"Available Routes:<br/>"
+        f"/api/v1.0/Precipitation<br/>"
+        f"/api/v1.0/Stations<br/>"
+        f"/api/v1.0/TOBS<br/>"
+        f"/api/v1.0/Starting_Temps<br/>"
+        f"/api/v1.0/Starting_Ending_Temps<br/>"
+    )
 
 
 @app.route("/api/v1.0/precipitation")
