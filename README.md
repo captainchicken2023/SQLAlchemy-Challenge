@@ -103,3 +103,4 @@ https://www.geeksforgeeks.org/connecting-pandas-to-a-database-with-sqlalchemy/#
 https://www.geeksforgeeks.org/matplotlib-pyplot-legend-in-python/?ref=lbp
 https://www.geeksforgeeks.org/how-to-visualize-data-from-mysql-database-by-using-matploltlib-in-python/
 https://sqliteviewer.app
+Flask-RESTful: Getting Started with Flast-RESTful to Build APIs (Employer-sourced Percipio training)
