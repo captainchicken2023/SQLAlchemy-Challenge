@@ -1,5 +1,6 @@
 # Import the dependencies.
 import numpy as np
+import datetime as dt
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -40,12 +41,13 @@ app = Flask(__name__)
 def home():
     return (
         f"Hawaii Climate API: Welcome<br/>"
+        f"<br/>"
         f"Available Routes:<br/>"
         f"/api/v1.0/Precipitation<br/>"
         f"/api/v1.0/Stations<br/>"
         f"/api/v1.0/TOBS<br/>"
-        f"/api/v1.0/Starting_Temps<br/>"
-        f"/api/v1.0/Starting_Ending_Temps<br/>"
+        f"/api/v1.0/Starting%20Temps<br/>"
+        f"/api/v1.0/Starting%20Ending%20Temps<br/>"
     )
 
 
@@ -55,23 +57,37 @@ def Precipitation():
 
 
 
-    return()
+
 
 # Convert the query results from your precipitation analysis (i.e. retrieve only the last 12 months of data) to a dictionary using date as the key and prcp as the value.
 prior_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
 query1 = session.query(measurement.date, measurement.prcp).\
     filter(measurement.date >= prior_year).all()
 
+prp_query = session.query(measurement.date, measurement.prcp).\
+                 filter(measurement.date >= prior_year).all()
 
+
+session.close()
 
 # Return the JSON representation of your dictionary.
+    prp_dict = []
+    for name, age, sex in results:
+        passenger_dict = {}
+        passenger_dict["name"] = name
+        passenger_dict["age"] = age
+        passenger_dict["sex"] = sex
+        all_passengers.append(passenger_dict)
 
+    return jsonify(prp_dict)
 
 # @app.route("/api/v1.0/stations")
 #     def Stations():
     # session = Session(engine)
 
 # # Return a JSON list of stations from the dataset.
+    # return()
+
 
 # @app.route("/api/v1.0/tobs")
 #     def TOBS():
@@ -80,6 +96,7 @@ query1 = session.query(measurement.date, measurement.prcp).\
 # # Query the dates and temperature observations of the most-active station for the previous year of data.
 
 # # Return a JSON list of temperature observations for the previous year.
+    # return()
 
 
 # @app.route("/api/v1.0/<start>")
@@ -87,6 +104,7 @@ query1 = session.query(measurement.date, measurement.prcp).\
     # session = Session(engine)
 
 # # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
+    # return()
 
 # # For a specified start, calculate TMIN, TAVG, and TMAX for all the dates greater than or equal to the start date.
 
