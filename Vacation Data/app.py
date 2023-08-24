@@ -51,19 +51,31 @@ def home():
 
 @app.route("/api/v1.0/precipitation")
 def Precipitation():
+    session = Session(engine)
+
+
+
     return()
+
 # Convert the query results from your precipitation analysis (i.e. retrieve only the last 12 months of data) to a dictionary using date as the key and prcp as the value.
+prior_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+query1 = session.query(measurement.date, measurement.prcp).\
+    filter(measurement.date >= prior_year).all()
+
+
 
 # Return the JSON representation of your dictionary.
 
 
 # @app.route("/api/v1.0/stations")
 #     def Stations():
+    # session = Session(engine)
 
 # # Return a JSON list of stations from the dataset.
 
 # @app.route("/api/v1.0/tobs")
 #     def TOBS():
+    # session = Session(engine)
 
 # # Query the dates and temperature observations of the most-active station for the previous year of data.
 
@@ -72,6 +84,7 @@ def Precipitation():
 
 # @app.route("/api/v1.0/<start>")
 #     def Starting_Temps():
+    # session = Session(engine)
 
 # # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
 
@@ -81,6 +94,7 @@ def Precipitation():
 
 # @app.route("/api/v1.0/<start>/<end>")
 #     def Starting_Ending_Temps():
+    # session = Session(engine)
 
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
 
