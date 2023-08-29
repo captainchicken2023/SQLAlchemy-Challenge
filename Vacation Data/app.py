@@ -74,9 +74,14 @@ def Precipitation():
     return jsonify(prp_list)
 
 # @app.route("/api/v1.0/stations")
-#     def Stations():
-    # session = Session(engine)
+def Stations():
+    session = Session(engine)
 
+
+
+
+    session.close()
+    
 # # Return a JSON list of stations from the dataset.
     # return()
 convert results into a list np.ravel
