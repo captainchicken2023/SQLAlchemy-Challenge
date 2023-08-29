@@ -103,10 +103,15 @@ def tobs():
 
 @app.route("/api/v1.0/temp/<start>")
 def Starting_Temps(start):
-    # session = Session(engine)
+    session = Session(engine)
+    sel = [measurement.station, 
+    func.min(measurement.tobs), 
+    func.avg(measurement.tobs), 
+    func.max(measurement.tobs)]
 
 # # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
-    # return()
+
+    return jsonify())
 
 # # For a specified start, calculate TMIN, TAVG, and TMAX for all the dates greater than or equal to the start date.
 
@@ -119,10 +124,7 @@ def Starting_Temps(start):
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
 
 
-# sel = [measurement.station, 
-#     func.min(measurement.tobs), 
-#     func.max(measurement.tobs), 
-#     func.avg(measurement.tobs)]
+
 
 # USC00519281_data = session.query(measurement.date, measurement.tobs).\
 #     filter(measurement.station == "USC00519281").\
