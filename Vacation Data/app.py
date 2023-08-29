@@ -45,7 +45,7 @@ def home():
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
-        f"/api/v1.0/tabs<br/>"
+        f"/api/v1.0/tobs<br/>"
         f"/api/v1.0/temp/start<br/>"
         f"/api/v1.0/temp/start/end<br/>"
     )
@@ -65,39 +65,44 @@ def Precipitation():
     session.close()
 
 # Return the JSON representation of your dictionary.
-    prp_list = []
+    prcp_list = []
     for date, prcp in prp_query:
-        prp_dict = {}
-        prp_dict[date] = prcp
-        prp_list.append(prp_dict)
+        prcp_dict = {}
+        prcp_dict[date] = prcp
+        prcp_list.append(prcp_dict)
 
-    return jsonify(prp_list)
+    return jsonify(prcp_list)
 
-# @app.route("/api/v1.0/stations")
-def Stations():
+@app.route("/api/v1.0/stations")
+def stations():
     session = Session(engine)
-
-
-
+    stations = session.query(station.station, station.name).all()
 
     session.close()
-    
-# # Return a JSON list of stations from the dataset.
-    # return()
-convert results into a list np.ravel
 
-# @app.route("/api/v1.0/tobs")
-#     def TOBS():
-    # session = Session(engine)
+# Return a JSON list of stations from the dataset.
+    all_stations = list(np.ravel(stations))
 
-# # Query the dates and temperature observations of the most-active station for the previous year of data.
+    return jsonify(all_stations)
 
-# # Return a JSON list of temperature observations for the previous year.
-    # return()
+@app.route("/api/v1.0/tobs")
+def tobs():
+    session = Session(engine)
+    prior_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    most_active_stations = session.query(measurement.station).group_by(measurement.station).order_by(func.count(measurement.id).desc()).first().station
 
+# Query the dates and temperature observations of the most-active station for the previous year of data.
+    usc00519281_data = session.query(measurement.date, measurement.tobs).\
+        filter_by(station = most_active_stations).\
+            filter(measurement.date >= prior_year).all()
+    session.close()
 
-# @app.route("/api/v1.0/temp/<start>")
-#     def Starting_Temps(start):
+# Return a JSON list of temperature observations for the previous year.
+    usc00519281_tobs = list(np.ravel(usc00519281_data))
+    return jsonify(usc00519281_tobs)
+
+@app.route("/api/v1.0/temp/<start>")
+def Starting_Temps(start):
     # session = Session(engine)
 
 # # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
@@ -114,16 +119,16 @@ convert results into a list np.ravel
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
 
 
-sel = [measurement.station, 
-    func.min(measurement.tobs), 
-    func.max(measurement.tobs), 
-    func.avg(measurement.tobs)]
+# sel = [measurement.station, 
+#     func.min(measurement.tobs), 
+#     func.max(measurement.tobs), 
+#     func.avg(measurement.tobs)]
 
-USC00519281_data = session.query(measurement.date, measurement.tobs).\
-    filter(measurement.station == "USC00519281").\
-    filter(measurement.date > prior_year).all()
+# USC00519281_data = session.query(measurement.date, measurement.tobs).\
+#     filter(measurement.station == "USC00519281").\
+#     filter(measurement.date > prior_year).all()
 
---> start/end filter
+# --> start/end filter
 
 
 
