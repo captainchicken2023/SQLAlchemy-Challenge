@@ -43,11 +43,11 @@ def home():
         f"Hawaii Climate API: Welcome<br/>"
         f"<br/>"
         f"Available Routes:<br/>"
-        f"/api/v1.0/Precipitation<br/>"
-        f"/api/v1.0/Stations<br/>"
-        f"/api/v1.0/TOBS<br/>"
-        f"/api/v1.0/Starting%20Temps<br/>"
-        f"/api/v1.0/Starting%20Ending%20Temps<br/>"
+        f"/api/v1.0/precipitation<br/>"
+        f"/api/v1.0/stations<br/>"
+        f"/api/v1.0/tabs<br/>"
+        f"/api/v1.0/temp/start<br/>"
+        f"/api/v1.0/temp/start/end<br/>"
     )
 
 
@@ -56,30 +56,22 @@ def Precipitation():
     session = Session(engine)
 
 
-
-
-
 # Convert the query results from your precipitation analysis (i.e. retrieve only the last 12 months of data) to a dictionary using date as the key and prcp as the value.
-prior_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
-query1 = session.query(measurement.date, measurement.prcp).\
-    filter(measurement.date >= prior_year).all()
-
-prp_query = session.query(measurement.date, measurement.prcp).\
-                 filter(measurement.date >= prior_year).all()
+    prior_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    prp_query = session.query(measurement.date, measurement.prcp).\
+                    filter(measurement.date >= prior_year).all()
 
 
-session.close()
+    session.close()
 
 # Return the JSON representation of your dictionary.
-    prp_dict = []
-    for name, age, sex in results:
-        passenger_dict = {}
-        passenger_dict["name"] = name
-        passenger_dict["age"] = age
-        passenger_dict["sex"] = sex
-        all_passengers.append(passenger_dict)
+    prp_list = []
+    for date, prcp in prp_query:
+        prp_dict = {}
+        prp_dict[date] = prcp
+        prp_list.append(prp_dict)
 
-    return jsonify(prp_dict)
+    return jsonify(prp_list)
 
 # @app.route("/api/v1.0/stations")
 #     def Stations():
@@ -87,7 +79,7 @@ session.close()
 
 # # Return a JSON list of stations from the dataset.
     # return()
-
+convert results into a list np.ravel
 
 # @app.route("/api/v1.0/tobs")
 #     def TOBS():
@@ -99,8 +91,8 @@ session.close()
     # return()
 
 
-# @app.route("/api/v1.0/<start>")
-#     def Starting_Temps():
+# @app.route("/api/v1.0/temp/<start>")
+#     def Starting_Temps(start):
     # session = Session(engine)
 
 # # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
@@ -110,14 +102,23 @@ session.close()
 
   
 
-# @app.route("/api/v1.0/<start>/<end>")
-#     def Starting_Ending_Temps():
+# @app.route("/api/v1.0/temp/<start>/<end>")
+#     def Starting_Ending_Temps(start, end):
     # session = Session(engine)
 
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
 
 
+sel = [measurement.station, 
+    func.min(measurement.tobs), 
+    func.max(measurement.tobs), 
+    func.avg(measurement.tobs)]
 
+USC00519281_data = session.query(measurement.date, measurement.tobs).\
+    filter(measurement.station == "USC00519281").\
+    filter(measurement.date > prior_year).all()
+
+--> start/end filter
 
 
 
