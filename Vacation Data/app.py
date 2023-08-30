@@ -108,17 +108,20 @@ def starting_temps(start):
     
     session.close()
 
-# Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
 # For a specified start, calculate TMIN, TAVG, and TMAX for all the dates greater than or equal to the start date.
-    temp_results = list(np.ravel(start_filter))
-    return jsonify(temp_results)  
+    temp1_results = list(np.ravel(start_filter))
+    return jsonify(temp1_results)  
 
-# @app.route("/api/v1.0/temp/<start>/<end>")
+@app.route("/api/v1.0/temp/<start>/<end>")
 def Starting_Ending_Temps(start, end):
     session = Session(engine)
+    start_end_filter=session.query(func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).filter(measurement.date >= start).filter(measurement.date <= end).all()
+    
+    session.close()
 
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
-
+    temp2_results = list(np.ravel(start_end_filter))
+    return jsonify(temp2_results)  
 
 
 
