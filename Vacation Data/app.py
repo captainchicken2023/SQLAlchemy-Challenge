@@ -103,62 +103,25 @@ def tobs():
 
 @app.route("/api/v1.0/temp/<start>")
 def starting_temps(start):
-    session = Session(engine)
-    starting_point = [measurement.station, func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)]
-    start_filter = session.query(*starting_point).filter(measurement.date >= start).all()
+    session = Session(engine)  
+    start_filter=session.query(func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).filter(measurement.date >= start).all()
     
     session.close()
 
 # Return a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
-    temp_results = list(np.ravel(starting_point))
-    return jsonify(temp_results)
-
 # For a specified start, calculate TMIN, TAVG, and TMAX for all the dates greater than or equal to the start date.
-
-  
+    temp_results = list(np.ravel(start_filter))
+    return jsonify(temp_results)  
 
 # @app.route("/api/v1.0/temp/<start>/<end>")
-#     def Starting_Ending_Temps(start, end):
-    # session = Session(engine)
+def Starting_Ending_Temps(start, end):
+    session = Session(engine)
 
 # # For a specified start date and end date, calculate TMIN, TAVG, and TMAX for the dates from the start date to the end date, inclusive.
 
 
 
 
-# USC00519281_data = session.query(measurement.date, measurement.tobs).\
-#     filter(measurement.station == "USC00519281").\
-#     filter(measurement.date > prior_year).all()
-
-# --> start/end filter
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-# # Hints
-# # Join the station and measurement tables for some of the queries.
-
-# # Use the Flask jsonify function to convert your API data to a valid JSON response object.
-
-
-
-# #A start route that:
-
-# #Accepts the start date as a parameter from the URL (2 points)
-
-# #Returns the min, max, and average temperatures calculated from the given start date to the end of the dataset (4 points)
-
-
-
-# #A start/end route that:
-
-# #Accepts the start and end dates as parameters from the URL (3 points)
-
-# #Returns the min, max, and average temperatures calculated from the given start date to the given end date (6 points)
